@@ -11,5 +11,9 @@
         <page name='MVVM'/>
         <page name='Method Swizzling'/>
         <page name='MemoryManagement'/>
+        <page name='Protocols'/>
+        <page name='WhatsNew'/>
+        <page name='Security'/>
+        <page name='AutoLayout'/>
     </pages>
 </playground>
