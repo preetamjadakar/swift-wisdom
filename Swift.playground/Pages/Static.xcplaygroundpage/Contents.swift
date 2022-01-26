@@ -51,19 +51,19 @@ class CricketTeam {
         team.forEach { $0.play() }
     }
 }
-//let rohitSharma = Batsman(name: "Rohit Sharma", score: 25)
-//print(rohitSharma.score)
-//rohitSharma.score = 30
-//print(rohitSharma.score)
-//
-//print("runrate:", Player.runRate)
-//Batsman.runRate = 3.1
-//print("runrate:", Player.runRate)
-//
-//let bumrah = Batsman(name: "Jasprit Bumrah", score: 5)
-//print(bumrah.score)
-//let indianTeam = CricketTeam(name: "India", team: [rohitSharma, bumrah])
-//indianTeam.play()
+let rohitSharma = Batsman(name: "Rohit Sharma", score: 25)
+print(rohitSharma.score)
+rohitSharma.score = 30
+print(rohitSharma.score)
+
+print("runrate:", Player.runRate)
+Batsman.runRate = 3.1
+print("runrate:", Player.runRate)
+
+let bumrah = Batsman(name: "Jasprit Bumrah", score: 5)
+print(bumrah.score)
+let indianTeam = CricketTeam(name: "India", team: [rohitSharma, bumrah])
+indianTeam.play()
 Batsman.runRate = 5.1
 
 Batsman.whoIam()
@@ -87,11 +87,11 @@ class BBNChild: BBNClass {
 }
 
 let bbn = BBNClass()
-//bbn.makeSomeNoise()
+bbn.makeSomeNoise()
 print(BBNClass.bbnValue)
 
 let bbn2 = BBNClass()
-//bbn2.makeSomeNoise()
+bbn2.makeSomeNoise()
 print(BBNClass.bbnValue)
 print(bbn2.temp)
 

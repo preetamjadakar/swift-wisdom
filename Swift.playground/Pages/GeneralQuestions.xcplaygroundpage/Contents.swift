@@ -1,16 +1,50 @@
 import UIKit
 
+
+/*:
+ # Property Wrappers:
+    - When dealing with properties that represent some form of state, it’s very common to have some kind of associated logic that gets triggered every time that a value is modified. For example, we might validate each new value according to a set of rules, we might transform our assigned values in some way, or we might be notifying a set of observers whenever a value was changed.
+ 
+ 
+ */
+
+@propertyWrapper struct Capitalized {
+    var wrappedValue: String {
+        didSet { wrappedValue = wrappedValue.capitalized }
+    }
+    
+    init(wrappedValue: String) {
+        self.wrappedValue = wrappedValue.capitalized
+    }
+}
+/// Note how we need to explicitly capitalize any string that was passed into our initializer, since property observers are only triggered after a value or object was fully initialized.
+
+struct User {
+    @Capitalized var firstName: String
+    @Capitalized var lastName: String
+}
+
+// John Appleseed
+var user = User(firstName: "john", lastName: "appleseed")
+print(user.firstName + user.lastName)
+// John Sundell
+user.lastName = "sundell"
+print(user.lastName)
+
 ///Associated Types:
 ///Associated types are a powerful way of making protocols generic
 
 protocol ItemStoring {
     associatedtype DataType
-    var items: [DataType] { get set}
+    var items: [DataType] { get set }
+    var number: Int { get }
     mutating func add(item: DataType)
 }
 
 extension ItemStoring {
+    
     mutating func add(item: DataType) {
+        
         items.append(item)
     }
 }
@@ -38,6 +72,19 @@ print(values)
 ///static is same as class final
 ///In case of static functions, if we access one of the static member, entire class gets loaded in memory. But in case of global function, only that particular function will be loaded in memory.
 
+// Can we have a instance of class to be a member of structure? And what's the impact?
+class TimePass {
+    
+}
+
+struct MakingTimePass {
+    var timePass = TimePass()
+    
+}
+
+extension MakingTimePass {
+    var number = Int()
+}
 
 ///Hashable
 
@@ -49,10 +96,49 @@ struct Student {
 }
 
 extension Student: Equatable {
-}
-extension Student: Hashable {
+    static func == (lhs: Student, rhs: Student) -> Bool {
+           return lhs.name == rhs.name &&
+                   lhs.id == rhs.id
+    }
 }
 
+let student1 = Student.init(name: "Preetam", id: 4)
+let student2 = Student.init(name: "Preetam", id: 4)
+let student3 = Student.init(name: "Mahesh", id: 4)
+print(student1 == student2)
+print(student1 == student3)
+/*
+ Easy enough, right?
+
+ Well actually, it’s even easier than that — as of Swift 4.1, the compiler can automatically synthesize conformance for structures whose stored properties all have types that are Equatable. We could replace all of the code in the extension by simply adopting Equatable in the declaration of Binomen:
+ */
+struct Binomen: Equatable {
+    let genus: String
+    let species: String
+}
+
+let 🐺 = Binomen(genus: "Canis", species: "lupus")
+let 🐻 = Binomen(genus: "Ursus", species: "arctos")
+🐺 == 🐺 // true
+🐺 == 🐻 // false
+
+/// The Limits of Automatic Synthesis:
+/// Tuples aren’t nominal types, so they can’t conform to Equatable.
+
+struct iPad: Hashable {
+    var serialNumber: String
+    var capacity: Int
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(serialNumber)
+    }
+}
+/*:
+ - From now on, a iPad instance can be a Dictionary key or a Set element.
+
+ - Because that conforms to the Hashable protocol and both its properties also conform to the Hashable protocol, Swift will generate a hash(into:) method automatically.
+
+ - However, in this case we can see that serialNumber is enough to identify each iPad uniquely so hashing capacity isn’t needed. So, we can write our own implementation of hash(into:) that hashes just that one property:
+ */
 
 ///
 
@@ -91,33 +177,51 @@ lazyTest.appendedString
  */
 
 /*:
-    # Optional Binding:
+ # Optional Binding:
  - Other than forced unwrapping, optional binding is a simpler and recommended way to unwrap an optional. You use optional binding to check if the optional contains a value or not.
+ */
+
+class Stock {
+    var price:Int? = Int()
+}
+func findStockCode(_ company:String) -> Stock? {
+    return Stock.init()
+}
 
  if let stock = findStockCode("Apple") {
      if let sharePrice = stock.price {
          let totalCost = sharePrice * 100
-         println(totalCost)
+         print(totalCost)
      }
  }
- 
- # Optional Chaining:
- -  Instead of writing nested “if set”, you can simplify the code by using Optional Chaining. The feature allows us to chain multiple optionals together with the “?.”
+ /*:
+  # Optional Chaining:
+ -  Instead of writing nested “if let”, you can simplify the code by using Optional Chaining. The feature allows us to chain multiple optionals together with the “?.”
+ */
+
  
  if let sharePrice = findStockCode("Apple")?.price {
      let totalCost = sharePrice * 100
-     println(totalCost)
+     print(totalCost)
  }
- */
+ 
 
 ///Closures are self-contained blocks of functionality that can be passed around and used in your code. — Apple
 
 // Closure take no parameter and return nothing
-let sayHello: () -> Void = {
+let sayHello: () -> Void = { // typealiase Void = ()
     print("Hello")
 }
 
 sayHello()
+
+//OR
+
+let sayHello2 = {
+    print("Hello2")
+}
+
+sayHello2()
 
 // Closure take one parameter and return 1 parameter
 let value: (Int) -> Int = { (value1) in
@@ -142,7 +246,7 @@ print(addValues(5, 4))
 
 ///Closure as an argument to method call
 
-func makeSquare(of number:Int, completion: (Int)->Void) {
+func makeSquare(of number:Int, completion: @escaping(Int)->Void) {
     let square = number * number
     completion(square)
 }
@@ -155,6 +259,38 @@ makeSquare(of: 5) { (result) in
 ///Non-escaping Closures: By Default
 
 ///When you are passing a closure as the function argument, the closure gets execute with the function’s body and returns the compiler back. As the execution ends, the passed closure goes out of scope and have no more existence in memory.
+/*
+ # @escaping and @nonescaping
+ - An escaping closure is a closure that’s called after the function it was passed to returns. In other words, it outlives the function it was passed to.
+ - A non-escaping closure is a closure that’s called within the function it was passed into, i.e. before it returns.
+ */
+var shoppingList = ["key":"value"]
+
+// Initialize the dictionary
+ func callSomeMethodWithParams(_ params: [AnyHashable: Any], onSuccess success: (_ JSON: Any) -> Void, onFailure failure:  (_ error: Error?, _ params: [AnyHashable: Any]) -> Void) {
+    
+    print("\n" + String(describing: params))
+    
+    let error: Error? = NSError(domain:"", code:1, userInfo:nil)
+
+    var responseArray: [Any]?
+    responseArray = [1,2,3,4,5]
+    
+    if let responseArr = responseArray {
+        success(responseArr)
+    }
+    if let err = error {
+        failure(err, params)
+    }
+}
+callSomeMethodWithParams(shoppingList, onSuccess: { (JSON) in
+    print("\nSuccess. Response received...: " + String(describing: JSON))
+}) { (error, params) in
+    if let err = error {
+        print("\nError: " + err.localizedDescription)
+    }
+    print("\nParameters passed are: " + String(describing:params))
+}
 
 
 /// POP: Protocol Oriented Programing

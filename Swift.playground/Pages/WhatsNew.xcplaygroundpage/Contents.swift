@@ -1,5 +1,6 @@
 //: [Previous](@previous)
-
+import UIKit
+import Foundation
 /*:
  # What's new in iOS15
  - All-new FaceTime that even works with Android!
@@ -20,5 +21,56 @@
     - The biggest change however is the ability to install extensions on Safari which isn’t possible on some other popular mobile browsers like Google Chrome.
  - Miscellaneous Changes in iOS 15: Photos, Siri, and Privacy Reports
  */
+
+/*:
+ # What's new in Swift 5.5
+ - Result enum: failure, success
+ -
+ # Async await
+    
+         func getSomeData(value: String) async -> [String] {
+         
+         }
+ let data = await getSomeData(value:"asd")  ==> Caller must be async if not use Task { }
+ 
+ # Async sequences
+ # Effectful read-only properties
+ 
+     enum FileError {
+         case missing, unreadable
+     }
+     struct BundleFile {
+         let fileName: String
+         
+         var contents: String {
+             get async throws {
+                 guard let url = Bundle.main.url(forResource: fileName, withExtension: nil) else {
+                     throw FileError.missing
+                 }
+                 do {
+                    return try String.contains(fileName)
+                 } catch  {
+                     throw FileError.unreadable
+                 }
+             }
+         }
+     }
+ 
+/// try await file.content
+ 
+ Structured concurrency
+ async let bindings
+ Continuations for interfacing async tasks with synchronous code
+ Actors
+ Global actors
+ Sendable and @Sendable closures
+ if for postfix member expressions
+ Allow interchangeable use of CGFloat and Double types
+ Codable synthesis for enums with associated values
+ lazy now works in local contexts
+ Extend property wrappers to function and closure parameters
+ Extending static member lookup in generic contexts
+ */
+
 
 //: [Next](@next)

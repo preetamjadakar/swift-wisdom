@@ -193,7 +193,7 @@ class Persistance {
 //    }
  }
 
-///Dependency Injection == “Gimme it” and Dependency Inversion == “Someone take care of this for me, somehow.”
+///Dependency Injection == “Give    me it” and Dependency Inversion == “Someone take care of this for me, somehow.”
 ///Dependency injection is a discrete, code-level tactic. Dependency inversion is more of an architectural strategy and way of structuring (decoupling) code bases.
 ///Example: Dependency Injection
 /*

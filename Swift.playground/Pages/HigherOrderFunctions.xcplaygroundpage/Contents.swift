@@ -83,6 +83,7 @@ let compactedNames = names.compactMap { (name) -> Bool? in
 print(compactedNames)
 
 /*: FlatMap: **Deprecated*
+ + Converts 2D array to one dimensional array
  + Combines Map and Filter
  + Returns optional
  */
@@ -117,5 +118,8 @@ func longerThan4(val1: String) -> Bool {
 let longerNames = names.first(where: longerThan4(val1:))
 print(longerNames ?? "no value")
 
+
+
 //: Higher order functions gives unexpected result on set
+
 //: [Previous](@previous)               [Next](@next)

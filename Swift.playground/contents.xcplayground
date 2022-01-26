@@ -2,6 +2,7 @@
 <playground version='6.0' target-platform='ios' display-mode='raw'>
     <pages>
         <page name='GeneralQuestions'/>
+        <page name='URLSession'/>
         <page name='HigherOrderFunctions'/>
         <page name='Bluetooth'/>
         <page name='Codable'/>
@@ -15,5 +16,7 @@
         <page name='WhatsNew'/>
         <page name='Security'/>
         <page name='AutoLayout'/>
+        <page name='MediaStreaming'/>
+        <page name='ErrorHandling'/>
     </pages>
 </playground>

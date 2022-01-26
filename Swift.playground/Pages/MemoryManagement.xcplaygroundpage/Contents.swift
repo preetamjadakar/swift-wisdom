@@ -18,7 +18,8 @@
  
  - when a strong viewmodel trigers a strong call to the self in completion handler, it creates a retain cycle or memory leak.
  - to avoid this problem, we use **capture-list** and do specify self as weak/unowned.
- */
+
+
 override func viewDidLoad() {
     super.viewDidLoad()
     …
@@ -26,9 +27,10 @@ override func viewDidLoad() {
         self?.tableView.reloadData()
     }
 }
-
+ */
 /*:
- Memory leak a portion of memory that is occupied forever and never used again. This takes space and causes problems in the App.
+ Memory leak is a portion of memory that is occupied forever and never used again. This takes space and causes problems in the App.
+ Retain cycle is nothing but memory leak where both objects are unable to make each other release.
  */
 
 //: [Next](@next)

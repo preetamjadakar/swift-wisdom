@@ -100,7 +100,9 @@ do {
 } catch {
     print("Failed to decode JSON3", error)
 }
-
+func add<T:AdditiveArithmetic>(first: T, second: T) -> T {
+    first + second
+}
 ///Nested JSON
 let json4 = """
 [

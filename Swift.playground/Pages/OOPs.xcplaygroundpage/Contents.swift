@@ -4,8 +4,6 @@ import UIKit
 
 ///1. CLASSES
 class Person {
-
-
     //1
     var age: Int!
     var gender: String!
